@@ -11,8 +11,12 @@ config_version=4
 [application]
 
 config/name="app"
-run/main_scene="res://presentation/views/main.tscn"
+run/main_scene="res://presentation/views/Main.tscn"
 config/icon="res://icon.png"
+
+[autoload]
+
+ApplicationStateNode="*res://business/state/ApplicationStateNode.tscn"
 
 [gui]
 

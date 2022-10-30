@@ -351,3 +351,5 @@ MigrationBackup/
 
 # Godot
 .import/
+.import
+.mono/
