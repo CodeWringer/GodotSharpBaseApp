@@ -17,12 +17,6 @@ public class LineEditAlphanumericOnly : LineEdit
     /// </summary>
     private InputFeedback _inputFeedbackNode;
 
-    /// <summary>
-    /// The last known valid string of this input. This is the text that will be restored when validation 
-    /// fails for a newly added text. 
-    /// </summary>
-    private string _lastValidText;
-
     private bool _isValid;
     /// <summary>
     /// Is true, if the current value of this input is valid in the current context. Read only.
@@ -38,7 +32,6 @@ public class LineEditAlphanumericOnly : LineEdit
         _validator = new AlphanumericValidator();
         Connect("text_changed", this, "_on_text_changed");
         _inputFeedbackNode = GetNode<InputFeedback>("InputFeedback");
-        _lastValidText = Text ?? string.Empty;
     }
 
     public void _on_text_changed(string new_text)
@@ -48,13 +41,11 @@ public class LineEditAlphanumericOnly : LineEdit
         {
             _inputFeedbackNode.Show(validation.Reason.Message);
             _isValid = false;
-            Text = _lastValidText;
         }
         else
         {
             _inputFeedbackNode.Hide();
             _isValid = true;
-            _lastValidText = new_text;
         }
     }
 }

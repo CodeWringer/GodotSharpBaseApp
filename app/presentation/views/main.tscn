@@ -16,93 +16,152 @@ script = ExtResource( 1 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
-anchor_right = 1.0
-anchor_bottom = 1.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="LabelTitle" type="Label" parent="VBoxContainer"]
-margin_right = 1024.0
-margin_bottom = 43.0
-custom_fonts/font = ExtResource( 2 )
-text = "Welcome to the Godot base app template"
-
-[node name="LabelDescription" type="Label" parent="VBoxContainer"]
-margin_top = 47.0
-margin_right = 1024.0
-margin_bottom = 110.0
-custom_fonts/font = ExtResource( 3 )
-text = "Contained within this template are:
-1. An input validation framework - keep scrolling to see examples.
-2. The Roboto font from Google Fonts - all credit goes to their respective owners. "
-
-[node name="VSpacer" type="Control" parent="VBoxContainer"]
-margin_top = 114.0
-margin_right = 1024.0
-margin_bottom = 138.0
-rect_min_size = Vector2( 0, 24 )
-size_flags_horizontal = 3
-
-[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer"]
-margin_top = 142.0
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
 margin_right = 1024.0
 margin_bottom = 600.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/ScrollContainer"]
-margin_right = 1024.0
-margin_bottom = 458.0
+[node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer"]
+margin_right = 1012.0
+margin_bottom = 897.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/ScrollContainer/VBoxContainer"]
-margin_right = 1024.0
-margin_bottom = 178.0
+[node name="LabelTitle" type="Label" parent="ScrollContainer/VBoxContainer"]
+margin_right = 1012.0
+margin_bottom = 43.0
+custom_fonts/font = ExtResource( 2 )
+text = "Welcome to the Godot base app template"
 
-[node name="LabelTitleValidation" type="Label" parent="VBoxContainer/ScrollContainer/VBoxContainer/VBoxContainer"]
-margin_right = 1024.0
+[node name="LabelDescription" type="Label" parent="ScrollContainer/VBoxContainer"]
+margin_top = 47.0
+margin_right = 1012.0
+margin_bottom = 352.0
+size_flags_horizontal = 3
+custom_fonts/font = ExtResource( 3 )
+text = "Contained within this template are:
+1. An input validation framework - keep scrolling to see examples.
+2. A data serialization framework, using the NuGet dependency \"UTF8Json\". 
+3. The Roboto font from Google Fonts - all credit goes to their respective owners. 
+
+To get started,, make it your own:
+1. Change out the `app/icon.png` image for your own. 
+2. Change the name of the project to your own. For that, in Godot, navigate to `Project > Project Settings > Application > config` and change the name to your preference. Be mindful that changing the name affects several other things in Godot, such as the name of the user-specific data directory. 
+3. If you're working with Visual Studio, the solution file can be found in `app` and is called `app.sln`. 
+4. Write your model of business data, inside the `app/business/model` directory and integrate your model into the `app/business/state/ApplicationState.cs` class. 
+5. Define the application-level settings as fields inside the `app/business/state/ApplicationSettings.cs` class. "
+autowrap = true
+
+[node name="VSpacer" type="Control" parent="ScrollContainer/VBoxContainer"]
+margin_top = 356.0
+margin_right = 1012.0
+margin_bottom = 380.0
+rect_min_size = Vector2( 0, 24 )
+size_flags_horizontal = 3
+
+[node name="VBoxContainerValidation" type="VBoxContainer" parent="ScrollContainer/VBoxContainer"]
+margin_top = 384.0
+margin_right = 1012.0
+margin_bottom = 562.0
+
+[node name="LabelTitleValidation" type="Label" parent="ScrollContainer/VBoxContainer/VBoxContainerValidation"]
+margin_right = 1012.0
 margin_bottom = 33.0
 custom_fonts/font = ExtResource( 4 )
 text = "Validation"
 
-[node name="LabelDescriptionValidation" type="Label" parent="VBoxContainer/ScrollContainer/VBoxContainer/VBoxContainer"]
+[node name="LabelDescriptionValidation" type="Label" parent="ScrollContainer/VBoxContainer/VBoxContainerValidation"]
 margin_top = 37.0
-margin_right = 1024.0
+margin_right = 1012.0
 margin_bottom = 122.0
 custom_fonts/font = ExtResource( 3 )
 text = "The provided validation framework requires the following to work:
 1. An input node. E. g. a LineEdit. 
 2. As a child node of the input, an instance of the InputFeedback scene. 
 3. The input node must have a script attached, which defines its validator and which may refuse changes made, if validation fails. "
+autowrap = true
 
-[node name="VSpacer2" type="Control" parent="VBoxContainer/ScrollContainer/VBoxContainer/VBoxContainer"]
+[node name="VSpacer2" type="Control" parent="ScrollContainer/VBoxContainer/VBoxContainerValidation"]
 margin_top = 126.0
-margin_right = 1024.0
+margin_right = 1012.0
 margin_bottom = 150.0
 rect_min_size = Vector2( 0, 24 )
 size_flags_horizontal = 3
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/ScrollContainer/VBoxContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="ScrollContainer/VBoxContainer/VBoxContainerValidation"]
 margin_top = 154.0
-margin_right = 1024.0
+margin_right = 1012.0
 margin_bottom = 178.0
 
-[node name="Label" type="Label" parent="VBoxContainer/ScrollContainer/VBoxContainer/VBoxContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="ScrollContainer/VBoxContainer/VBoxContainerValidation/HBoxContainer"]
 margin_top = 2.0
 margin_right = 141.0
 margin_bottom = 21.0
 custom_fonts/font = ExtResource( 3 )
 text = "Alphanumberic only"
 
-[node name="LineEditAlphanumericOnly" type="LineEdit" parent="VBoxContainer/ScrollContainer/VBoxContainer/VBoxContainer/HBoxContainer"]
+[node name="LineEditAlphanumericOnly" type="LineEdit" parent="ScrollContainer/VBoxContainer/VBoxContainerValidation/HBoxContainer"]
 margin_left = 145.0
-margin_right = 1024.0
+margin_right = 1012.0
 margin_bottom = 24.0
 size_flags_horizontal = 3
 placeholder_text = "Type here"
 script = ExtResource( 6 )
 
-[node name="InputFeedback" parent="VBoxContainer/ScrollContainer/VBoxContainer/VBoxContainer/HBoxContainer/LineEditAlphanumericOnly" instance=ExtResource( 5 )]
+[node name="InputFeedback" parent="ScrollContainer/VBoxContainer/VBoxContainerValidation/HBoxContainer/LineEditAlphanumericOnly" instance=ExtResource( 5 )]
 visible = false
+
+[node name="VSpacer3" type="Control" parent="ScrollContainer/VBoxContainer"]
+margin_top = 566.0
+margin_right = 1012.0
+margin_bottom = 590.0
+rect_min_size = Vector2( 0, 24 )
+size_flags_horizontal = 3
+
+[node name="VBoxContainerSerialization" type="VBoxContainer" parent="ScrollContainer/VBoxContainer"]
+margin_top = 594.0
+margin_right = 1012.0
+margin_bottom = 897.0
+
+[node name="LabelTitleSerialization" type="Label" parent="ScrollContainer/VBoxContainer/VBoxContainerSerialization"]
+margin_right = 1012.0
+margin_bottom = 33.0
+custom_fonts/font = ExtResource( 4 )
+text = "Serialization"
+
+[node name="LabelDescriptionValidation2" type="Label" parent="ScrollContainer/VBoxContainer/VBoxContainerSerialization"]
+margin_top = 37.0
+margin_right = 1012.0
+margin_bottom = 232.0
+custom_fonts/font = ExtResource( 3 )
+text = "The \"Serialize\"-button's \"pressed\"-signal is hooked up in the code for the main scene. Look for it in the Main.cs file. 
+
+Clicking the \"Serialize\"-button will create or overwrite a file called \"example.json\". The file's exact location is relative to the OS the project is run on: 
+Windows: %APPDATA%/Godot/app_userdata/[project_name]/example.json
+macOS: ~/Library/Application Support/Godot/app_userdata/[project_name]/example.json
+Linux: ~/.local/share/godot/app_userdata/[project_name]/example.json
+
+Clicking on the \"Deserialize\"-button will attempt to read the data from disk, if possible. "
+autowrap = true
+
+[node name="ButtonSerialize" type="Button" parent="ScrollContainer/VBoxContainer/VBoxContainerSerialization"]
+margin_top = 236.0
+margin_right = 1012.0
+margin_bottom = 256.0
+text = "Serialize"
+
+[node name="ButtonDeserialize" type="Button" parent="ScrollContainer/VBoxContainer/VBoxContainerSerialization"]
+margin_top = 260.0
+margin_right = 1012.0
+margin_bottom = 280.0
+text = "Deserialize"
+
+[node name="InputFeedback" parent="ScrollContainer/VBoxContainer/VBoxContainerSerialization/ButtonDeserialize" instance=ExtResource( 5 )]
+
+[node name="LabelSerialization" type="Label" parent="ScrollContainer/VBoxContainer/VBoxContainerSerialization"]
+margin_top = 284.0
+margin_right = 1012.0
+margin_bottom = 303.0
+custom_fonts/font = ExtResource( 3 )
+autowrap = true

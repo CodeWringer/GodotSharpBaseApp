@@ -3,6 +3,6 @@
     <TargetFramework>net472</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="business\dataaccess\" />
+    <PackageReference Include="Utf8Json" Version="1.3.7" />
   </ItemGroup>
 </Project>

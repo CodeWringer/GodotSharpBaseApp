@@ -8,6 +8,8 @@ An opinionated quick-start template for Godot projects using C# and aiming not t
   * All presentation logic is what's happening inside of Godot's systems. Godot artifacts are separated by type by default and bundled together when reasonable. For example, components are structured so as to be as self-contained as possible. 
   * All actual business logic is to be handled by C#. 
 * An input validation framework, with working examples. 
+* A data source framework, with working example. 
+  * This is a suggestion for how to read and write data from and to disk. 
 * The 'Roboto' Google font. All credit goes to their respective owners. Its license is contained in the font's directory. 
 
 ## Prerequisites
@@ -23,9 +25,10 @@ While this project is designed to include all the necessary parts for a running 
 After having cloned this repository, you should be able to build and run the project right away. Then, make it your own:
 
 1. Change out the `app/icon.png` image for your own. 
-2. If you're working with Visual Studio, the solution file can be found in `app` and is called `app.sln`. 
-3. Write your model of business data, inside the `app/business/model` directory and integrate your model into the `app/business/state/ApplicationState.cs` class. 
-4. Define the application-level settings as fields inside the `app/business/state/ApplicationSettings.cs` class. 
+2. Change the name of the project to your own. For that, in Godot, navigate to `Project > Project Settings > Application > config` and change the name to your preference. Be mindful that changing the name affects several other things in Godot, such as the name of the user-specific data directory. 
+3. If you're working with Visual Studio, the solution file can be found in `app` and is called `app.sln`. 
+4. Write your model of business data, inside the `app/business/model` directory and integrate your model into the `app/business/state/ApplicationState.cs` class. 
+5. Define the application-level settings as fields inside the `app/business/state/ApplicationSettings.cs` class. 
 
 ## Gotchas
 * Due to how Godot automatically adds the contents of the Godot project to the Godot associated C# project, it is best practice to **avoid** adding C# sub-projects within the directory structure of the Godot project. 
