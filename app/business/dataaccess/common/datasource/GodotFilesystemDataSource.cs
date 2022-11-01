@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using app.business.dataaccess.common.datasource;
+using System.IO;
 using Utf8Json;
 
 namespace app.business.dataaccess
@@ -9,7 +10,7 @@ namespace app.business.dataaccess
     /// Writes the data out as json and parses from json. 
     /// </summary>
     /// <typeparam name="T">The type of data to read/write. </typeparam>
-    internal abstract class GodotFilesystemDataSource<T> : IReadableDataSource<T>, IWriteableDataSource<T>
+    internal abstract class GodotFilesystemDataSource<T> : AbstractReadWriteDataSource<T>
     {
         /// <summary>
         /// Returns the absolute file path, using Godot's relative paths. 
@@ -30,7 +31,7 @@ namespace app.business.dataaccess
         /// <returns></returns>
         /// <exception cref="DirectoryNotFoundException">Thrown if the path doesn't point to the user-directory. </exception>
         /// <exception cref="FileNotFoundException">Thrown, if the file does not exist. </exception>
-        public T Read()
+        public override T Read()
         {
             if (FilePath.StartsWith(USER_PREFIX) != true)
                 throw new DirectoryNotFoundException("File path lacks required prefix \"" + USER_PREFIX + "\"");
@@ -51,7 +52,7 @@ namespace app.business.dataaccess
         /// </summary>
         /// <param name="toWrite">The instance to write out. </param>
         /// <exception cref="DirectoryNotFoundException">Thrown if the path doesn't point to the user-directory. </exception>
-        public void Write(T toWrite)
+        public override void Write(T toWrite)
         {
             if (FilePath.StartsWith(USER_PREFIX) != true)
                 throw new DirectoryNotFoundException("File path lacks required prefix \"" + USER_PREFIX + "\"");

@@ -24,7 +24,7 @@ size_flags_vertical = 3
 
 [node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer"]
 margin_right = 1012.0
-margin_bottom = 897.0
+margin_bottom = 941.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
@@ -45,7 +45,7 @@ text = "Contained within this template are:
 2. A data serialization framework, using the NuGet dependency \"UTF8Json\". 
 3. The Roboto font from Google Fonts - all credit goes to their respective owners. 
 
-To get started,, make it your own:
+To get started, make it your own:
 1. Change out the `app/icon.png` image for your own. 
 2. Change the name of the project to your own. For that, in Godot, navigate to `Project > Project Settings > Application > config` and change the name to your preference. Be mindful that changing the name affects several other things in Godot, such as the name of the user-specific data directory. 
 3. If you're working with Visual Studio, the solution file can be found in `app` and is called `app.sln`. 
@@ -122,7 +122,7 @@ size_flags_horizontal = 3
 [node name="VBoxContainerSerialization" type="VBoxContainer" parent="ScrollContainer/VBoxContainer"]
 margin_top = 594.0
 margin_right = 1012.0
-margin_bottom = 897.0
+margin_bottom = 941.0
 
 [node name="LabelTitleSerialization" type="Label" parent="ScrollContainer/VBoxContainer/VBoxContainerSerialization"]
 margin_right = 1012.0
@@ -145,23 +145,40 @@ Linux: ~/.local/share/godot/app_userdata/[project_name]/example.json
 Clicking on the \"Deserialize\"-button will attempt to read the data from disk, if possible. "
 autowrap = true
 
-[node name="ButtonSerialize" type="Button" parent="ScrollContainer/VBoxContainer/VBoxContainerSerialization"]
+[node name="HBoxContainerToggleMock" type="HBoxContainer" parent="ScrollContainer/VBoxContainer/VBoxContainerSerialization"]
 margin_top = 236.0
 margin_right = 1012.0
-margin_bottom = 256.0
+margin_bottom = 276.0
+
+[node name="LabelToggleMock" type="Label" parent="ScrollContainer/VBoxContainer/VBoxContainerSerialization/HBoxContainerToggleMock"]
+margin_top = 10.0
+margin_right = 69.0
+margin_bottom = 29.0
+custom_fonts/font = ExtResource( 3 )
+text = "Use Mock"
+
+[node name="CheckButtonToggleMock" type="CheckButton" parent="ScrollContainer/VBoxContainer/VBoxContainerSerialization/HBoxContainerToggleMock"]
+margin_left = 73.0
+margin_right = 149.0
+margin_bottom = 40.0
+
+[node name="ButtonSerialize" type="Button" parent="ScrollContainer/VBoxContainer/VBoxContainerSerialization"]
+margin_top = 280.0
+margin_right = 1012.0
+margin_bottom = 300.0
 text = "Serialize"
 
 [node name="ButtonDeserialize" type="Button" parent="ScrollContainer/VBoxContainer/VBoxContainerSerialization"]
-margin_top = 260.0
+margin_top = 304.0
 margin_right = 1012.0
-margin_bottom = 280.0
+margin_bottom = 324.0
 text = "Deserialize"
 
 [node name="InputFeedback" parent="ScrollContainer/VBoxContainer/VBoxContainerSerialization/ButtonDeserialize" instance=ExtResource( 5 )]
 
 [node name="LabelSerialization" type="Label" parent="ScrollContainer/VBoxContainer/VBoxContainerSerialization"]
-margin_top = 284.0
+margin_top = 328.0
 margin_right = 1012.0
-margin_bottom = 303.0
+margin_bottom = 347.0
 custom_fonts/font = ExtResource( 3 )
 autowrap = true

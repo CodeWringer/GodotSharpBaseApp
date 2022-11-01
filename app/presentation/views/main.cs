@@ -1,4 +1,5 @@
 using app.business.dataaccess.example;
+using app.business.dataaccess.example.dto;
 using app.business.model;
 using app.business.state;
 using Godot;
@@ -12,10 +13,13 @@ using System.Linq;
 /// </summary>
 public class Main : Control
 {
+    private ApplicationState _state;
+
     private Button _buttonSerialize;
     private Button _buttonDeserialize;
     private InputFeedback _deserializeFeedback;
     private Label _labelSerialization;
+    private CheckButton _checkButtonToggleMock;
 
     private const string PATH_CONTAINER_SERIALIZATION = "ScrollContainer/VBoxContainer/VBoxContainerSerialization";
 
@@ -29,30 +33,31 @@ public class Main : Control
 
         _deserializeFeedback = GetNode<InputFeedback>(PATH_CONTAINER_SERIALIZATION + "/ButtonDeserialize/InputFeedback");
         _labelSerialization = GetNode<Label>(PATH_CONTAINER_SERIALIZATION + "/LabelSerialization");
+
+        _checkButtonToggleMock = GetNode<CheckButton>(PATH_CONTAINER_SERIALIZATION + "/HBoxContainerToggleMock/CheckButtonToggleMock");
+
+        _state = ApplicationState.GetFromSceneTree(this);
     }
 
     public void _on_buttonSerialize_pressed()
     {
-        var serializer = new ExampleGodotFilesystemSerializer();
+        bool mock = _checkButtonToggleMock.Pressed;
+        var repository = new ExampleGodotFilesystemRepository(mock);
         var toSerialize = new ExampleSerializable()
         {
-            items = new List<AnItem>()
-            {
-                new AnItem("Abc1"),
-                new AnItem("Def2"),
-                new AnItem("Ghi3"),
-            }
+            items = _state.Items
         };
-        serializer.Write(toSerialize);
+        repository.Write(toSerialize);
         _labelSerialization.Text = "Serialized: " + toSerialize.items.Count() + " items";
     }
 
     public void _on_buttonDeserialize_pressed()
     {
-        var serializer = new ExampleGodotFilesystemSerializer();
+        bool mock = _checkButtonToggleMock.Pressed;
+        var repository = new ExampleGodotFilesystemRepository(mock);
         try
         {
-            var deserialized = serializer.Read();
+            var deserialized = repository.Read();
             _labelSerialization.Text = "Deserialized: " + deserialized.items.Count() + " items";
         }
         catch (FileNotFoundException)

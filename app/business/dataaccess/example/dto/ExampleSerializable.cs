@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace app.business.dataaccess.example
+namespace app.business.dataaccess.example.dto
 {
     /// <summary>
     /// Represents a type that can be serialized to/from json. 
