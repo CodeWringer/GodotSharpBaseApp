@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace app.business.dataaccess.example
 {
-    internal class ExampleGodotFilesystemMockDataSource : AbstractReadWriteDataSource<ExampleSerializable>
+    internal class ExampleGodotFileSystemMockDataSource : AbstractReadWriteDataSource<ExampleSerializable>
     {
         private ExampleSerializable data = new ExampleSerializable()
         {
@@ -24,7 +24,7 @@ namespace app.business.dataaccess.example
 
         public override void Write(ExampleSerializable toWrite)
         {
-            this.data = toWrite;
+            data = toWrite;
         }
     }
 }

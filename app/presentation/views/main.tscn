@@ -24,7 +24,7 @@ size_flags_vertical = 3
 
 [node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer"]
 margin_right = 1012.0
-margin_bottom = 941.0
+margin_bottom = 1040.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
@@ -122,7 +122,7 @@ size_flags_horizontal = 3
 [node name="VBoxContainerSerialization" type="VBoxContainer" parent="ScrollContainer/VBoxContainer"]
 margin_top = 594.0
 margin_right = 1012.0
-margin_bottom = 941.0
+margin_bottom = 1040.0
 
 [node name="LabelTitleSerialization" type="Label" parent="ScrollContainer/VBoxContainer/VBoxContainerSerialization"]
 margin_right = 1012.0
@@ -180,5 +180,45 @@ text = "Deserialize"
 margin_top = 328.0
 margin_right = 1012.0
 margin_bottom = 347.0
+custom_fonts/font = ExtResource( 3 )
+autowrap = true
+
+[node name="HBoxContainerAbsolute" type="HBoxContainer" parent="ScrollContainer/VBoxContainer/VBoxContainerSerialization"]
+margin_top = 351.0
+margin_right = 1012.0
+margin_bottom = 375.0
+
+[node name="LabelAbsolutePath" type="Label" parent="ScrollContainer/VBoxContainer/VBoxContainerSerialization/HBoxContainerAbsolute"]
+margin_top = 2.0
+margin_right = 124.0
+margin_bottom = 21.0
+custom_fonts/font = ExtResource( 3 )
+text = "Absolute file path"
+
+[node name="LineEditAbsolutePath" type="LineEdit" parent="ScrollContainer/VBoxContainer/VBoxContainerSerialization/HBoxContainerAbsolute"]
+margin_left = 128.0
+margin_right = 1012.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+placeholder_text = "An absolute file path like \"C:/temp/abc.json\""
+
+[node name="ButtonSerialize2" type="Button" parent="ScrollContainer/VBoxContainer/VBoxContainerSerialization"]
+margin_top = 379.0
+margin_right = 1012.0
+margin_bottom = 399.0
+text = "Serialize"
+
+[node name="ButtonDeserialize2" type="Button" parent="ScrollContainer/VBoxContainer/VBoxContainerSerialization"]
+margin_top = 403.0
+margin_right = 1012.0
+margin_bottom = 423.0
+text = "Deserialize"
+
+[node name="InputFeedback" parent="ScrollContainer/VBoxContainer/VBoxContainerSerialization/ButtonDeserialize2" instance=ExtResource( 5 )]
+
+[node name="LabelSerialization2" type="Label" parent="ScrollContainer/VBoxContainer/VBoxContainerSerialization"]
+margin_top = 427.0
+margin_right = 1012.0
+margin_bottom = 446.0
 custom_fonts/font = ExtResource( 3 )
 autowrap = true

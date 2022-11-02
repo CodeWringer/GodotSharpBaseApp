@@ -1,10 +1,14 @@
-﻿using app.business.dataaccess.example.dto;
+﻿using app.business.dataaccess.common.datasource;
+using app.business.dataaccess.example.dto;
+using app.business.dataaccess.util;
 
 namespace app.business.dataaccess.example
 {
-    internal class ExampleGodotFilesystemDataSource : GodotFilesystemDataSource<ExampleSerializable>
+    internal class ExampleGodotFileSystemDataSource : GodotFileSystemDataSource<ExampleSerializable>
     {
-        private string _filePath = USER_PREFIX + "example.json";
-        public override string FilePath { get => _filePath; protected set => _filePath = value; }
+        public ExampleGodotFileSystemDataSource()
+            : base(PathUtility.USER_DIR_PATH_PREFIX + "example.json")
+        {
+        }
     }
 }
