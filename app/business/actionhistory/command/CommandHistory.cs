@@ -8,8 +8,8 @@ namespace app.business.actionhistory.command
     /// <br></br>
     /// Keeps two histories: one for the actions taken and which could be "undone" and one for the actions that <b>have been</b> "undone". 
     /// <br></br>
-    /// This represents the command-pattern for an undo history. This undo system is lightest on memory, but is fairly complex 
-    /// in terms of implementation. 
+    /// This represents the command-pattern for an undo history. This undo system is lightest on memory, but is fairly heavy  
+    /// in terms of implementation and maintenance. 
     /// </summary>
     public class CommandHistory
     {

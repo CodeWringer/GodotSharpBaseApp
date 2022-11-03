@@ -44,7 +44,9 @@ namespace test.app.business.actionhistory.command
 
         public void Invoke()
         {
-            _item = new TestItem(_newName);
+            if (_item == null)
+                _item = new TestItem(_newName);
+
             _state.Items.Add(_item);
         }
 
@@ -136,6 +138,85 @@ namespace test.app.business.actionhistory.command
             Assert.AreEqual(1, given.Reversed.Count);
             Assert.AreEqual(1, givenState.Items.Count);
             Assert.AreEqual(givenNewItemName1, givenState.Items.First().Name);
+        }
+
+        [Test]
+        public void UndoRedoLimit100()
+        {
+            // Given
+            var given = new CommandHistory();
+            given.MaxHistoryEntryCount = 100;
+
+            var givenState = new TestModelState();
+            var givenNewItemName1 = "Abc1";
+            var givenNewItemName2 = "Def2";
+            // When
+            given.Invoke(new AddItemCommand(givenState, givenNewItemName1));
+            var item = givenState.Items.First();
+            given.Invoke(new RenameItemCommand(item, givenNewItemName2));
+            // Then
+            Assert.AreEqual(2, given.Reversible.Count);
+            Assert.AreEqual(0, given.Reversed.Count);
+            Assert.AreEqual(1, givenState.Items.Count);
+            Assert.AreEqual(givenNewItemName2, givenState.Items.First().Name);
+            // When
+            var undone = given.Undo();
+            // Then
+            Assert.NotNull(undone);
+            Assert.AreEqual(1, given.Reversible.Count);
+            Assert.AreEqual(1, given.Reversed.Count);
+            Assert.AreEqual(1, givenState.Items.Count);
+            Assert.AreEqual(givenNewItemName1, givenState.Items.First().Name);
+            // When
+            given.Undo();
+            // Then
+            Assert.AreEqual(0, given.Reversible.Count);
+            Assert.AreEqual(2, given.Reversed.Count);
+            Assert.AreEqual(0, givenState.Items.Count);
+            // When
+            given.Redo();
+            given.Redo();
+            // Then
+            Assert.AreEqual(2, given.Reversible.Count);
+            Assert.AreEqual(0, given.Reversed.Count);
+            Assert.AreEqual(1, givenState.Items.Count);
+            Assert.AreEqual(givenNewItemName2, givenState.Items.First().Name);
+        }
+
+        [Test]
+        public void AnonymousCommands()
+        {
+            // Given
+            var given = new CommandHistory();
+            given.MaxHistoryEntryCount = 100;
+
+            var givenState = new TestModelState();
+            var givenName = "Abc1";
+            // When
+            given.Invoke(new ReversibleCommand<TestModelState>(givenState, 
+                (state, workingData) => {
+                    if (workingData.ContainsKey("item"))
+                    {
+                        var item = (TestItem)workingData["item"];
+                        state.Items.Add(item);
+                    }
+                    else
+                    {
+                        var newItem = new TestItem(givenName);
+                        state.Items.Add(newItem);
+                        workingData.Add("item", newItem.Id);
+                    }
+                },
+                (state, workingData) => {
+                    var itemToRemove = (TestItem)workingData["item"];
+                    state.Items.Remove(itemToRemove);
+                }
+            ));
+            // Then
+            Assert.AreEqual(1, given.Reversible.Count);
+            Assert.AreEqual(0, given.Reversed.Count);
+            Assert.AreEqual(1, givenState.Items.Count);
+            Assert.AreEqual(givenN, givenState.Items.First().Name);
         }
     }
 }
