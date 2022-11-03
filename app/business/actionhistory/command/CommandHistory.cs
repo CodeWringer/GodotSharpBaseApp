@@ -1,5 +1,4 @@
-﻿using app.business.actionhistory.commandhistory;
-using app.business.util;
+﻿using app.business.util;
 using System.Collections.Generic;
 
 namespace app.business.actionhistory.command
@@ -9,20 +8,20 @@ namespace app.business.actionhistory.command
     /// <br></br>
     /// Keeps two histories: one for the actions taken and which could be "undone" and one for the actions that <b>have been</b> "undone". 
     /// <br></br>
-    /// This represents the command-pattern for an undo history. This undo system is lightest on memory, but fairly complex 
+    /// This represents the command-pattern for an undo history. This undo system is lightest on memory, but is fairly complex 
     /// in terms of implementation. 
     /// </summary>
-    internal class CommandHistory
+    public class CommandHistory
     {
         /// <summary>
         /// The history of commands that could be "undone". 
         /// </summary>
-        public LimitedStack<ReversibleCommand> Reversible { get; protected set; }
+        public LimitedStack<IReversibleCommand> Reversible { get; protected set; }
 
         /// <summary>
         /// The history of commands that have been "undone". 
         /// </summary>
-        public Stack<ReversibleCommand> Reversed { get; protected set; }
+        public Stack<IReversibleCommand> Reversed { get; protected set; }
 
         /// <summary>
         /// The number of commands to keep in history at most. Oldest entries will be discarded, 
@@ -36,8 +35,8 @@ namespace app.business.actionhistory.command
 
         public CommandHistory()
         {
-            Reversible = new LimitedStack<ReversibleCommand>(100);
-            Reversed = new Stack<ReversibleCommand>();
+            Reversible = new LimitedStack<IReversibleCommand>(100);
+            Reversed = new Stack<IReversibleCommand>();
         }
 
         /// <summary>
@@ -51,7 +50,7 @@ namespace app.business.actionhistory.command
         /// targets an item that no longer exists and is therefore no longer valid. 
         /// </summary>
         /// <param name="command">The command to execute and memorize. </param>
-        public void Invoke(ReversibleCommand command)
+        public void Invoke(IReversibleCommand command)
         {
             command.Invoke();
             Reversible.Push(command);
@@ -62,7 +61,7 @@ namespace app.business.actionhistory.command
         /// Reverses the last made command and returns it. Returns null, if there is no command to reverse. 
         /// </summary>
         /// <returns>The command that was "undone". </returns>
-        public ReversibleCommand Undo()
+        public IReversibleCommand Undo()
         {
             if (Reversible.Count == 0)
                 return null;
@@ -78,7 +77,7 @@ namespace app.business.actionhistory.command
         /// Re-applies the last command that was reversed and returns it. Returns null, if there is no command to re-apply. 
         /// </summary>
         /// <returns>The command that was re-applied. </returns>
-        public ReversibleCommand Redo()
+        public IReversibleCommand Redo()
         {
             if (Reversed.Count == 0)
                 return null;
