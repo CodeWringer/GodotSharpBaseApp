@@ -1,0 +1,128 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://presentation/components/InputFeedback/InputFeedback.tscn" type="PackedScene" id=1]
+[ext_resource path="res://presentation/fonts/roboto/roboto_regular.tres" type="DynamicFont" id=2]
+[ext_resource path="res://presentation/fonts/roboto/roboto_header2.tres" type="DynamicFont" id=3]
+[ext_resource path="res://presentation/views/demo/DemoSerialization/DemoSerialization.cs" type="Script" id=4]
+
+[sub_resource type="StyleBoxFlat" id=1]
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color( 0.678431, 0.192157, 0.192157, 1 )
+
+[node name="DemoSerialization" type="PanelContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 4 )
+
+[node name="VBoxContainerSerialization" type="VBoxContainer" parent="."]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 1017.0
+margin_bottom = 593.0
+
+[node name="LabelTitleSerialization" type="Label" parent="VBoxContainerSerialization"]
+margin_right = 1010.0
+margin_bottom = 33.0
+custom_fonts/font = ExtResource( 3 )
+text = "Serialization"
+
+[node name="LabelDescriptionValidation2" type="Label" parent="VBoxContainerSerialization"]
+margin_top = 37.0
+margin_right = 1010.0
+margin_bottom = 232.0
+custom_fonts/font = ExtResource( 2 )
+text = "The \"Serialize\"-button's \"pressed\"-signal is hooked up in the code for the main scene. Look for it in the Main.cs file. 
+
+Clicking the \"Serialize\"-button will create or overwrite a file called \"example.json\". The file's exact location is relative to the OS the project is run on:
+Windows: %APPDATA%/Godot/app_userdata/[project_name]/example.json
+macOS: ~/Library/Application Support/Godot/app_userdata/[project_name]/example.json
+Linux: ~/.local/share/godot/app_userdata/[project_name]/example.json
+
+Clicking on the \"Deserialize\"-button will attempt to read the data from disk, if possible. "
+autowrap = true
+
+[node name="HBoxContainerToggleMock" type="HBoxContainer" parent="VBoxContainerSerialization"]
+margin_top = 236.0
+margin_right = 1010.0
+margin_bottom = 276.0
+
+[node name="LabelToggleMock" type="Label" parent="VBoxContainerSerialization/HBoxContainerToggleMock"]
+margin_top = 10.0
+margin_right = 69.0
+margin_bottom = 29.0
+custom_fonts/font = ExtResource( 2 )
+text = "Use Mock"
+
+[node name="CheckButtonToggleMock" type="CheckButton" parent="VBoxContainerSerialization/HBoxContainerToggleMock"]
+margin_left = 73.0
+margin_right = 149.0
+margin_bottom = 40.0
+
+[node name="ButtonSerialize" type="Button" parent="VBoxContainerSerialization"]
+margin_top = 280.0
+margin_right = 1010.0
+margin_bottom = 300.0
+text = "Serialize"
+
+[node name="ButtonDeserialize" type="Button" parent="VBoxContainerSerialization"]
+margin_top = 304.0
+margin_right = 1010.0
+margin_bottom = 324.0
+text = "Deserialize"
+
+[node name="InputFeedback" parent="VBoxContainerSerialization/ButtonDeserialize" instance=ExtResource( 1 )]
+custom_styles/panel = SubResource( 1 )
+
+[node name="LabelSerialization" type="Label" parent="VBoxContainerSerialization"]
+margin_top = 328.0
+margin_right = 1010.0
+margin_bottom = 347.0
+custom_fonts/font = ExtResource( 2 )
+autowrap = true
+
+[node name="HBoxContainerAbsolute" type="HBoxContainer" parent="VBoxContainerSerialization"]
+margin_top = 351.0
+margin_right = 1010.0
+margin_bottom = 375.0
+
+[node name="LabelAbsolutePath" type="Label" parent="VBoxContainerSerialization/HBoxContainerAbsolute"]
+margin_top = 2.0
+margin_right = 124.0
+margin_bottom = 21.0
+custom_fonts/font = ExtResource( 2 )
+text = "Absolute file path"
+
+[node name="LineEditAbsolutePath" type="LineEdit" parent="VBoxContainerSerialization/HBoxContainerAbsolute"]
+margin_left = 128.0
+margin_right = 1010.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+placeholder_text = "An absolute file path like \"C:/temp/abc.json\""
+caret_blink = true
+caret_blink_speed = 0.5
+
+[node name="ButtonSerialize2" type="Button" parent="VBoxContainerSerialization"]
+margin_top = 379.0
+margin_right = 1010.0
+margin_bottom = 399.0
+text = "Serialize"
+
+[node name="ButtonDeserialize2" type="Button" parent="VBoxContainerSerialization"]
+margin_top = 403.0
+margin_right = 1010.0
+margin_bottom = 423.0
+text = "Deserialize"
+
+[node name="InputFeedback" parent="VBoxContainerSerialization/ButtonDeserialize2" instance=ExtResource( 1 )]
+custom_styles/panel = SubResource( 1 )
+
+[node name="LabelSerialization2" type="Label" parent="VBoxContainerSerialization"]
+margin_top = 427.0
+margin_right = 1010.0
+margin_bottom = 446.0
+custom_fonts/font = ExtResource( 2 )
+autowrap = true
