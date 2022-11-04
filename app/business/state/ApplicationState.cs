@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using Godot;
 using app.business.exception;
+using System;
+using app.business.dataaccess.applicationsettings;
+using System.IO;
 
 namespace app.business.state
 {
@@ -10,7 +13,7 @@ namespace app.business.state
     /// 
     /// It contains all root-level business data. 
     /// </summary>
-    public class ApplicationState
+    public class ApplicationState : ICloneable
     {
         /// <summary>
         /// General application settings. 
@@ -31,7 +34,16 @@ namespace app.business.state
 
         public ApplicationState()
         {
-            // TODO: Load app settings from disk
+            var repository = new ApplicationSettingsRepository();
+            try
+            {
+                Settings = repository.Read();
+            }
+            catch (FileNotFoundException)
+            {
+                Settings = new ApplicationSettings();
+                repository.Write(Settings);
+            }
         }
 
         /// <summary>
@@ -49,6 +61,30 @@ namespace app.business.state
                 throw new MissingNodeException();
             else 
                 return node.State;
+        }
+
+        /// <summary>
+        /// Creates a deep copy of this state object. 
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public object Clone()
+        {
+            return new ApplicationState()
+            {
+                Items = new List<AnItem>(this.Items),
+                Settings = (ApplicationSettings)this.Settings.Clone()
+            };
+        }
+
+        /// <summary>
+        /// Copies the values of the given object to the fields of this object. 
+        /// </summary>
+        /// <param name="toApply">The object whose values to copy. </param>
+        public void Apply(ApplicationState toApply)
+        {
+            this.Items = toApply.Items;
+            this.Settings = toApply.Settings;
         }
     }
 }
