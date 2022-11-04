@@ -22,12 +22,10 @@ margin_bottom = 600.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 scroll_horizontal_enabled = false
-scroll_vertical = 942
 
 [node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer"]
-margin_top = -942.0
 margin_right = 1012.0
-margin_bottom = 600.0
+margin_bottom = 1579.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
@@ -230,7 +228,7 @@ autowrap = true
 [node name="VBoxContainerUndo" type="VBoxContainer" parent="ScrollContainer/VBoxContainer"]
 margin_top = 1066.0
 margin_right = 1012.0
-margin_bottom = 1542.0
+margin_bottom = 1579.0
 
 [node name="LabelTitleUndo" type="Label" parent="ScrollContainer/VBoxContainer/VBoxContainerUndo"]
 margin_right = 1012.0
@@ -248,17 +246,21 @@ text = "The folowing example showcases three undo history design patterns. They 
 For each example, you can add and modify a locally kept business state and undo/redo the last alterations made. "
 autowrap = true
 
-[node name="LabelTitleCommandPattern" type="Label" parent="ScrollContainer/VBoxContainer/VBoxContainerUndo"]
+[node name="VBoxContainerCommand" type="VBoxContainer" parent="ScrollContainer/VBoxContainer/VBoxContainerUndo"]
 margin_top = 126.0
 margin_right = 1012.0
-margin_bottom = 159.0
+margin_bottom = 439.0
+
+[node name="LabelTitleCommandPattern" type="Label" parent="ScrollContainer/VBoxContainer/VBoxContainerUndo/VBoxContainerCommand"]
+margin_right = 1012.0
+margin_bottom = 33.0
 custom_fonts/font = ExtResource( 4 )
 text = "1. Command pattern"
 
-[node name="LabelDescriptionCommandPattern" type="Label" parent="ScrollContainer/VBoxContainer/VBoxContainerUndo"]
-margin_top = 163.0
+[node name="LabelDescriptionCommandPattern" type="Label" parent="ScrollContainer/VBoxContainer/VBoxContainerUndo/VBoxContainerCommand"]
+margin_top = 37.0
 margin_right = 1012.0
-margin_bottom = 402.0
+margin_bottom = 276.0
 custom_fonts/font = ExtResource( 3 )
 text = "The command pattern works by storing two histories of commands that the user executed in order to modify the business state. 
 It is possible to undo and re-do any number of commands, but re-doing is only possible until a completely new command is executed, at which point the history for \"re-doable\" commands is discarded. E. g.: 1. Add an item (new command), 2. move the item (new command), 3. undo moving the item, 4. delete the item (new command). Re-doing the move is now impossible, as the item to move no longer exists. 
@@ -266,16 +268,70 @@ It is possible to undo and re-do any number of commands, but re-doing is only po
 For every command, an \"inverse\" command must be provided, which can \"undo\" the state alteration. This design pattern *should* be lightest on memory usage, but is fairly tricky in terms of implementation and maintenance. For example, adding a new business item via a command must be undoable and re-doable in a way so as to produce an item with the exact same properties every time. Consider also the question of whether to store object references or identifying properties in commands that target business items. If a reference is stored and an item in question is deleted, then other commands targeting that item may no longer work, when both the deletion and those other commands are undone or re-done. "
 autowrap = true
 
-[node name="LabelTitleSnapshotPattern" type="Label" parent="ScrollContainer/VBoxContainer/VBoxContainerUndo"]
-margin_top = 406.0
+[node name="ControlsListCommand" type="HBoxContainer" parent="ScrollContainer/VBoxContainer/VBoxContainerUndo/VBoxContainerCommand"]
+margin_top = 280.0
 margin_right = 1012.0
-margin_bottom = 439.0
+margin_bottom = 300.0
+
+[node name="ButtonAdd" type="Button" parent="ScrollContainer/VBoxContainer/VBoxContainerUndo/VBoxContainerCommand/ControlsListCommand"]
+margin_right = 72.0
+margin_bottom = 20.0
+text = "Add Item"
+
+[node name="ButtonRename" type="Button" parent="ScrollContainer/VBoxContainer/VBoxContainerUndo/VBoxContainerCommand/ControlsListCommand"]
+margin_left = 76.0
+margin_right = 199.0
+margin_bottom = 20.0
+text = "Rename Selected"
+
+[node name="ButtonDelete" type="Button" parent="ScrollContainer/VBoxContainer/VBoxContainerUndo/VBoxContainerCommand/ControlsListCommand"]
+margin_left = 203.0
+margin_right = 317.0
+margin_bottom = 20.0
+text = "Delete Selected"
+
+[node name="Spacer" type="Control" parent="ScrollContainer/VBoxContainer/VBoxContainerUndo/VBoxContainerCommand/ControlsListCommand"]
+margin_left = 321.0
+margin_right = 385.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 64, 0 )
+
+[node name="ButtonUndo" type="Button" parent="ScrollContainer/VBoxContainer/VBoxContainerUndo/VBoxContainerCommand/ControlsListCommand"]
+margin_left = 389.0
+margin_right = 435.0
+margin_bottom = 20.0
+text = "Undo"
+
+[node name="ButtonRedo" type="Button" parent="ScrollContainer/VBoxContainer/VBoxContainerUndo/VBoxContainerCommand/ControlsListCommand"]
+margin_left = 439.0
+margin_right = 483.0
+margin_bottom = 20.0
+text = "Redo"
+
+[node name="LabelInfo" type="Label" parent="ScrollContainer/VBoxContainer/VBoxContainerUndo/VBoxContainerCommand/ControlsListCommand"]
+margin_left = 487.0
+margin_right = 1012.0
+margin_bottom = 19.0
+size_flags_horizontal = 3
+custom_fonts/font = ExtResource( 3 )
+text = "Undo-able: 0; Redo-able: 0"
+
+[node name="ItemList" type="ItemList" parent="ScrollContainer/VBoxContainer/VBoxContainerUndo/VBoxContainerCommand"]
+margin_top = 304.0
+margin_right = 1012.0
+margin_bottom = 313.0
+auto_height = true
+
+[node name="LabelTitleSnapshotPattern" type="Label" parent="ScrollContainer/VBoxContainer/VBoxContainerUndo"]
+margin_top = 443.0
+margin_right = 1012.0
+margin_bottom = 476.0
 custom_fonts/font = ExtResource( 4 )
 text = "2. Snapshot/Memento pattern"
 
 [node name="LabelTitleDeltaPattern" type="Label" parent="ScrollContainer/VBoxContainer/VBoxContainerUndo"]
-margin_top = 443.0
+margin_top = 480.0
 margin_right = 1012.0
-margin_bottom = 476.0
+margin_bottom = 513.0
 custom_fonts/font = ExtResource( 4 )
 text = "3. Delta pattern"

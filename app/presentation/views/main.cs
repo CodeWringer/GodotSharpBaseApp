@@ -1,3 +1,4 @@
+using app.business.actionhistory.command;
 using app.business.dataaccess;
 using app.business.dataaccess.common.datasource;
 using app.business.dataaccess.example;
@@ -18,6 +19,7 @@ public class Main : Control
 {
     private ApplicationState _state;
 
+    // Serialization
     private Button _buttonSerialize;
     private Button _buttonDeserialize;
     private InputFeedback _deserializeFeedback;
@@ -31,13 +33,32 @@ public class Main : Control
 
     private const string PATH_CONTAINER_SERIALIZATION = "ScrollContainer/VBoxContainer/VBoxContainerSerialization";
 
+    // Undo history
+    private const string PATH_CONTAINER_UNDO = "ScrollContainer/VBoxContainer/VBoxContainerUndo";
+
+    // Command undo history
+    private const string PATH_CONTAINER_UNDO_COMMAND = PATH_CONTAINER_UNDO + "VBoxContainerCommand/";
+    private ItemList _itemListCommand;
+    private Button _buttonAddItemCommand;
+    private Button _buttonRenameItemCommand;
+    private Button _buttonDeleteItemCommand;
+    private Button _buttonUndoCommand;
+    private Button _buttonRedoCommand;
+    private Label _labelInfoCommand;
+    private List<AnItem> _itemsCommand;
+    private CommandHistory _commandHistory;
+
     public override void _Ready()
     {
+        _state = ApplicationState.GetFromSceneTree(this);
+
+        // Serialization
+
         _buttonSerialize = GetNode<Button>(PATH_CONTAINER_SERIALIZATION + "/ButtonSerialize");
-        _buttonSerialize.Connect("pressed", this, "_on_buttonSerialize_pressed");
+        _buttonSerialize.Connect("pressed", this, nameof(_on_buttonSerialize_pressed));
 
         _buttonDeserialize = GetNode<Button>(PATH_CONTAINER_SERIALIZATION + "/ButtonDeserialize");
-        _buttonDeserialize.Connect("pressed", this, "_on_buttonDeserialize_pressed");
+        _buttonDeserialize.Connect("pressed", this, nameof(_on_buttonDeserialize_pressed));
 
         _deserializeFeedback = GetNode<InputFeedback>(PATH_CONTAINER_SERIALIZATION + "/ButtonDeserialize/InputFeedback");
         _labelSerialization = GetNode<Label>(PATH_CONTAINER_SERIALIZATION + "/LabelSerialization");
@@ -46,15 +67,32 @@ public class Main : Control
         _lineEditAbsolutePath = GetNode<LineEdit>(PATH_CONTAINER_SERIALIZATION + "/HBoxContainerAbsolute/LineEditAbsolutePath");
 
         _buttonSerialize2 = GetNode<Button>(PATH_CONTAINER_SERIALIZATION + "/ButtonSerialize2");
-        _buttonSerialize2.Connect("pressed", this, "_on_buttonSerialize2_pressed");
+        _buttonSerialize2.Connect("pressed", this, nameof(_on_buttonSerialize2_pressed));
 
         _buttonDeserialize2 = GetNode<Button>(PATH_CONTAINER_SERIALIZATION + "/ButtonDeserialize2");
-        _buttonDeserialize2.Connect("pressed", this, "_on_buttonDeserialize2_pressed");
+        _buttonDeserialize2.Connect("pressed", this, nameof(_on_buttonDeserialize2_pressed));
 
         _deserializeFeedback2 = GetNode<InputFeedback>(PATH_CONTAINER_SERIALIZATION + "/ButtonDeserialize2/InputFeedback");
         _labelSerialization2 = GetNode<Label>(PATH_CONTAINER_SERIALIZATION + "/LabelSerialization2");
 
-        _state = ApplicationState.GetFromSceneTree(this);
+        // Command undo history
+        _itemListCommand = GetNode<ItemList>(PATH_CONTAINER_UNDO_COMMAND + "/ItemList");
+        _buttonAddItemCommand = GetNode<Button>(PATH_CONTAINER_UNDO_COMMAND + "/ButtonAdd");
+        _buttonAddItemCommand.Connect("pressed", this, nameof(_on_buttonAddCommand_pressed));
+        _buttonRenameItemCommand = GetNode<Button>(PATH_CONTAINER_UNDO_COMMAND + "/ButtonRename");
+        _buttonRenameItemCommand.Connect("pressed", this, nameof(_on_buttonRenameCommand_pressed));
+        _buttonDeleteItemCommand = GetNode<Button>(PATH_CONTAINER_UNDO_COMMAND + "/ButtonDelete");
+        _buttonDeleteItemCommand.Connect("pressed", this, nameof(_on_buttonDeleteCommand_pressed));
+        _buttonUndoCommand = GetNode<Button>(PATH_CONTAINER_UNDO_COMMAND + "/ButtonUndo");
+        _buttonUndoCommand.Connect("pressed", this, nameof(_on_buttonUndoCommand_pressed));
+        _buttonRedoCommand = GetNode<Button>(PATH_CONTAINER_UNDO_COMMAND + "/ButtonRedo");
+        _buttonRedoCommand.Connect("pressed", this, nameof(_on_buttonRedoCommand_pressed));
+        _labelInfoCommand = GetNode<Label>(PATH_CONTAINER_UNDO_COMMAND + "/LabelInfo");
+        _itemsCommand = new List<AnItem>()
+        {
+            new AnItem("Abc1")
+        };
+        _commandHistory = new CommandHistory();
     }
 
     public void _on_buttonSerialize_pressed()
@@ -151,5 +189,49 @@ public class Main : Control
             _labelSerialization2.Text = string.Empty;
             return;
         }
+    }
+
+    public void _on_buttonAddCommand_pressed()
+    {
+        _commandHistory.Invoke(new ReversibleCommand<List<AnItem>>(_itemsCommand, 
+            (state, workingData) => {
+                AnItem item;
+                string newName = "New Item";
+
+                if (workingData.ContainsKey("itemId"))
+                    item = new AnItem((Guid)workingData["itemId"], newName);
+                else
+                    item = new AnItem(newName);
+
+                state.Add(item);
+            },
+            (state, workingData) => {
+                Guid id = (Guid)workingData["itemId"];
+                var toRemove = state.Find(item => item.Id == id);
+                state.Remove(toRemove);
+            }
+        ));
+    }
+
+    public void _on_buttonRenameCommand_pressed()
+    {
+
+    }
+
+    public void _on_buttonDeleteCommand_pressed()
+    {
+        
+    }
+
+    public void _on_buttonUndoCommand_pressed()
+    {
+        _commandHistory.Undo();
+        _labelInfoCommand.Text = string.Format("Undo-able: {0}; Redo-able: {1}", _commandHistory.Reversible.Count, _commandHistory.Reversed.Count);
+    }
+
+    public void _on_buttonRedoCommand_pressed()
+    {
+        _commandHistory.Redo();
+        _labelInfoCommand.Text = string.Format("Undo-able: {0}; Redo-able: {1}", _commandHistory.Reversible.Count, _commandHistory.Reversed.Count);
     }
 }

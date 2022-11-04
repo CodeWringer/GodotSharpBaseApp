@@ -15,5 +15,11 @@ namespace app.business.model
             this.Id = Guid.NewGuid();
             this.Name = name;
         }
+
+        public AnItem(Guid id, string name)
+        {
+            Id = id;
+            Name = name;
+        }
     }
 }

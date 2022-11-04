@@ -216,7 +216,7 @@ namespace test.app.business.actionhistory.command
             Assert.AreEqual(1, given.Reversible.Count);
             Assert.AreEqual(0, given.Reversed.Count);
             Assert.AreEqual(1, givenState.Items.Count);
-            Assert.AreEqual(givenN, givenState.Items.First().Name);
+            Assert.AreEqual(givenName, givenState.Items.First().Name);
         }
     }
 }
