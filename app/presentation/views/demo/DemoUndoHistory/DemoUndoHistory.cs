@@ -45,7 +45,7 @@ public class DemoUndoHistory : Control
 
     public void _on_buttonAddCommand_pressed()
     {
-        _commandHistory.Invoke(new ReversibleCommand<List<AnItem>>(_itemsCommand,
+        _commandHistory.InvokeAndPush(new ReversibleCommand<List<AnItem>>(_itemsCommand,
             (state, workingData) => {
                 AnItem item;
                 string newName = "New Item";

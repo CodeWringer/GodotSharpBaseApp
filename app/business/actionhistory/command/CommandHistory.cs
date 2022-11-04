@@ -11,7 +11,7 @@ namespace app.business.actionhistory.command
     /// This represents the command-pattern for an undo history. This undo system is lightest on memory, but is fairly heavy  
     /// in terms of implementation and maintenance. 
     /// </summary>
-    public class CommandHistory
+    public class CommandHistory : IActionHistory<IReversibleCommand>
     {
         /// <summary>
         /// The history of commands that could be "undone". 
@@ -26,6 +26,8 @@ namespace app.business.actionhistory.command
         /// <summary>
         /// The number of commands to keep in history at most. Oldest entries will be discarded, 
         /// once the limit has been reached.
+        /// <br></br>
+        /// Default 100. 
         /// </summary>
         public int MaxHistoryEntryCount
         {
@@ -50,7 +52,7 @@ namespace app.business.actionhistory.command
         /// targets an item that no longer exists and is therefore no longer valid. 
         /// </summary>
         /// <param name="command">The command to execute and memorize. </param>
-        public void Invoke(IReversibleCommand command)
+        public void InvokeAndPush(IReversibleCommand command)
         {
             command.Invoke();
             Reversible.Push(command);
@@ -66,11 +68,11 @@ namespace app.business.actionhistory.command
             if (Reversible.Count == 0)
                 return null;
 
-            var action = Reversible.Pop();
-            action.InvokeReverse();
-            Reversed.Push(action);
+            var popped = Reversible.Pop();
+            popped.InvokeReverse();
+            Reversed.Push(popped);
 
-            return action;
+            return popped;
         }
 
         /// <summary>

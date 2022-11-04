@@ -92,7 +92,7 @@ namespace test.app.business.actionhistory.command
             var givenState = new TestModelState();
             var givenNewItemName = "Abc1";
             // When
-            given.Invoke(new AddItemCommand(givenState, givenNewItemName));
+            given.InvokeAndPush(new AddItemCommand(givenState, givenNewItemName));
             // Then
             Assert.AreEqual(1, given.Reversible.Count);
             Assert.AreEqual(0, given.Reversed.Count);
@@ -122,9 +122,9 @@ namespace test.app.business.actionhistory.command
             var givenNewItemName1 = "Abc1";
             var givenNewItemName2 = "Def2";
             // When
-            given.Invoke(new AddItemCommand(givenState, givenNewItemName1));
+            given.InvokeAndPush(new AddItemCommand(givenState, givenNewItemName1));
             var item = givenState.Items.First();
-            given.Invoke(new RenameItemCommand(item, givenNewItemName2));
+            given.InvokeAndPush(new RenameItemCommand(item, givenNewItemName2));
             // Then
             Assert.AreEqual(2, given.Reversible.Count);
             Assert.AreEqual(0, given.Reversed.Count);
@@ -151,9 +151,9 @@ namespace test.app.business.actionhistory.command
             var givenNewItemName1 = "Abc1";
             var givenNewItemName2 = "Def2";
             // When
-            given.Invoke(new AddItemCommand(givenState, givenNewItemName1));
+            given.InvokeAndPush(new AddItemCommand(givenState, givenNewItemName1));
             var item = givenState.Items.First();
-            given.Invoke(new RenameItemCommand(item, givenNewItemName2));
+            given.InvokeAndPush(new RenameItemCommand(item, givenNewItemName2));
             // Then
             Assert.AreEqual(2, given.Reversible.Count);
             Assert.AreEqual(0, given.Reversed.Count);
@@ -193,7 +193,7 @@ namespace test.app.business.actionhistory.command
             var givenState = new TestModelState();
             var givenName = "Abc1";
             // When
-            given.Invoke(new ReversibleCommand<TestModelState>(givenState, 
+            given.InvokeAndPush(new ReversibleCommand<TestModelState>(givenState, 
                 (state, workingData) => {
                     if (workingData.ContainsKey("item"))
                     {
