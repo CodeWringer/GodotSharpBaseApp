@@ -25,6 +25,18 @@ namespace test.app.business.util
         }
 
         [Test]
+        public void LoweringLimitOnEmptyStack()
+        {
+            // Given
+            var given = new LimitedStack<string>(5);
+            // When
+            given.Capacity = 3;
+            // Then
+            Assert.AreEqual(0, given.Count);
+            Assert.AreEqual(3, given.Capacity);
+        }
+
+        [Test]
         public void LoweringLimitDiscardsOldestEntries()
         {
             // Given

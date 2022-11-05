@@ -87,6 +87,31 @@ namespace test.app.business.actionhistory.command
         }
 
         [Test]
+        public void CapacityLoweredByOneDropsOldestEntry()
+        {
+            // Given
+            var given = new CommandHistory();
+            given.MaxHistoryEntryCount = 2;
+
+            var givenState = new TestState();
+            var givenNewItemName = "Abc1";
+            // When
+            given.InvokeAndPush(new AddItemCommand(givenState, givenNewItemName));
+            given.InvokeAndPush(new AddItemCommand(givenState, givenNewItemName));
+            // Then
+            Assert.AreEqual(2, given.Reversible.Count);
+            Assert.AreEqual(0, given.Reversed.Count);
+            Assert.AreEqual(2, givenState.Items.Count);
+            Assert.AreEqual(givenNewItemName, givenState.Items.First().Name);
+            // When
+            given.MaxHistoryEntryCount = 1;
+            // Then
+            Assert.AreEqual(1, given.Reversible.Count);
+            Assert.AreEqual(0, given.Reversed.Count);
+            Assert.AreEqual(2, givenState.Items.Count);
+        }
+
+        [Test]
         public void OneUndoOneRedoLimit100()
         {
             // Given
