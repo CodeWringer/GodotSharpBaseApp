@@ -10,10 +10,10 @@ namespace app.business.state
 {
     /// <summary>
     /// This is the base and global application state object. 
-    /// 
+    /// <br></br>
     /// It contains all root-level business data. 
     /// </summary>
-    public class ApplicationState : ICloneable
+    public class ApplicationState : AbstractApplicationState<ApplicationState>
     {
         /// <summary>
         /// General application settings. 
@@ -63,28 +63,25 @@ namespace app.business.state
                 return node.State;
         }
 
-        /// <summary>
-        /// Creates a deep copy of this state object. 
-        /// </summary>
-        /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
-        public object Clone()
-        {
-            return new ApplicationState()
-            {
-                Items = new List<AnItem>(this.Items),
-                Settings = (ApplicationSettings)this.Settings.Clone()
-            };
-        }
-
-        /// <summary>
-        /// Copies the values of the given object to the fields of this object. 
-        /// </summary>
-        /// <param name="toApply">The object whose values to copy. </param>
-        public void Apply(ApplicationState toApply)
+        public override void Apply(ApplicationState toApply)
         {
             this.Items = toApply.Items;
             this.Settings = toApply.Settings;
+        }
+
+        public override ApplicationState Clone()
+        {
+            var clonedItems = new List<AnItem>();
+            foreach (var item in Items)
+            {
+                clonedItems.Add(item.Clone());
+            }
+
+            return new ApplicationState()
+            {
+                Items = clonedItems,
+                Settings = this.Settings.Clone()
+            };
         }
     }
 }

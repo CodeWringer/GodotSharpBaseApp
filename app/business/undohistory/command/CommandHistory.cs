@@ -11,7 +11,7 @@ namespace app.business.actionhistory.command
     /// This represents the command-pattern for an undo history. This undo system is lightest on memory, but is fairly heavy  
     /// in terms of implementation and maintenance. 
     /// </summary>
-    public class CommandHistory : IActionHistory<IReversibleCommand>
+    public class CommandHistory : IUndoHistory<IReversibleCommand>
     {
         /// <summary>
         /// The history of commands that could be "undone". 

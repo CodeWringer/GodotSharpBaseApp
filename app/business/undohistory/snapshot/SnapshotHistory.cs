@@ -1,28 +1,36 @@
 ﻿using app.business.state;
 using app.business.util;
+using System;
 using System.Collections.Generic;
 
 namespace app.business.actionhistory.state
 {
     /// <summary>
-    /// Represents full snapshots of the business models state, whenever it is altered. 
+    /// Represents full snapshots of the business model state, whenever it is altered. 
     /// </summary>
-    internal class StateHistory : IActionHistory<ApplicationState>
+    /// <typeparam name="T">Data type of the concrete application state type. </typeparam>
+    public class SnapshotHistory<T> : IUndoHistory<T>
+        where T : AbstractApplicationState<T>
     {
         /// <summary>
         /// A reference to the application state. 
         /// </summary>
-        private ApplicationState _state;
+        private T _state;
+
+        /// <summary>
+        /// A copy of the initial state. 
+        /// </summary>
+        private T _initialState;
 
         /// <summary>
         /// The history of state snapshots. 
         /// </summary>
-        public LimitedStack<ApplicationState> Reversible { get; protected set; }
+        public LimitedStack<T> Reversible { get; protected set; }
 
         /// <summary>
         /// The history of reversed state snapshots. In other words, these are the snapshots that have been "undone". 
         /// </summary>
-        public Stack<ApplicationState> Reversed { get; protected set; }
+        public Stack<T> Reversed { get; protected set; }
 
         /// <summary>
         /// The number of commands to keep in history at most. Oldest entries will be discarded, 
@@ -36,19 +44,22 @@ namespace app.business.actionhistory.state
             set { Reversible.Capacity = value; }
         }
 
-        public StateHistory(ApplicationState state)
+        public SnapshotHistory(T state)
         {
             _state = state;
-            Reversible = new LimitedStack<ApplicationState>(32);
-            Reversed = new Stack<ApplicationState>();
+            _initialState = state.Clone();
+            Reversible = new LimitedStack<T>(32);
+            Reversed = new Stack<T>();
         }
 
         /// <summary>
         /// Pushes a new snapshot of the ApplicationState to the stack. 
+        /// <br></br>
+        /// A new snapshot is meant to be taken after every alteration of the model state. 
         /// </summary>
-        public void Push()
+        public void TakeSnapshot()
         {
-            ApplicationState cloned = (ApplicationState)_state.Clone();
+            T cloned = _state.Clone();
             Reversible.Push(cloned);
         }
 
@@ -56,31 +67,49 @@ namespace app.business.actionhistory.state
         /// Reverses the last made state and returns it. Returns null, if there is no state to reverse. 
         /// </summary>
         /// <returns>The state that was "undone". </returns>
-        public ApplicationState Undo()
+        public T Undo()
         {
-            if (Reversible.Count == 0)
-                return null;
+            if (Reversible.Count > 0)
+            {
+                var popped = Reversible.Pop();
 
-            var state = Reversible.Pop();
-            _state.Apply(state);
-            Reversed.Push(state);
+                if (Reversible.Count > 0)
+                {
+                    T toApply = Reversible.Peek();
+                    _state.Apply(toApply);
+                }
+                else
+                {
+                    T toApply = _initialState;
+                    _state.Apply(toApply);
+                }
 
-            return state;
+                Reversed.Push(popped);
+
+                return popped;
+            }
+            else
+            {
+                _state.Apply(_initialState);
+
+                return default;
+            }
         }
 
         /// <summary>
         /// Re-applies the last state that was reversed and returns it. Returns null, if there is no state to re-apply. 
         /// </summary>
         /// <returns>The state that was re-applied. </returns>
-        public ApplicationState Redo()
+        public T Redo()
         {
             if (Reversed.Count == 0)
-                return null;
+                return default;
 
-            var state = Reversed.Pop();
-            Reversible.Push(state);
+            var toApply = Reversed.Pop();
+            _state.Apply(toApply);
+            Reversible.Push(toApply);
 
-            return state;
+            return toApply;
         }
 
         /// <summary>
@@ -90,6 +119,7 @@ namespace app.business.actionhistory.state
         {
             Reversible.Clear();
             Reversed.Clear();
+            _initialState = _state.Clone();
         }
 
         /// <summary>
@@ -98,6 +128,7 @@ namespace app.business.actionhistory.state
         public void ClearReversible()
         {
             Reversible.Clear();
+            _initialState = _state.Clone();
         }
 
         /// <summary>

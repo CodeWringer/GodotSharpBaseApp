@@ -1,18 +1,19 @@
-﻿using System;
+﻿using app.business.util;
+using System;
 
 namespace app.business.state
 {
     /// <summary>
     /// Represents general user-made settings of the app that are/can be persisted between runs of the app. 
     /// </summary>
-    public class ApplicationSettings : ICloneable
+    public class ApplicationSettings : ITypedCloneable<ApplicationSettings>
     {
         /// <summary>
         /// The Godot-specific uri of the application settings. 
         /// </summary>
         public static readonly string PATH_APP_SETTINGS = "user://app_settings.json";
 
-        public object Clone()
+        public ApplicationSettings Clone()
         {
             return new ApplicationSettings();
         }

@@ -1,13 +1,10 @@
-﻿using app.business.util;
-using System.Collections.Generic;
-
-namespace app.business.actionhistory
+﻿namespace app.business.actionhistory
 {
     /// <summary>
     /// Represents a history of undoable/redoable commands or states. 
     /// </summary>
     /// <typeparam name="T">The data type of commands/states this undo history works with. </typeparam>
-    public interface IActionHistory<T>
+    public interface IUndoHistory<T>
     {
         /// <summary>
         /// Reverses the last made command/state and returns it. Returns null, if there is nothing reverse. 

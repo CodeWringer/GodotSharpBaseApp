@@ -1,42 +1,17 @@
 ﻿using app.business.actionhistory.command;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using test.app.business.undohistory;
 
 namespace test.app.business.actionhistory.command
 {
-    internal class TestItem
-    {
-        public Guid Id;
-        public string Name;
-
-        public TestItem(string name)
-        {
-            Id = Guid.NewGuid();
-            Name = name;
-        }
-    }
-
-    internal class TestModelState
-    {
-        public List<TestItem> Items;
-
-        public TestModelState()
-        {
-            Items = new List<TestItem>();
-        }
-    }
-
     internal class AddItemCommand : IReversibleCommand
     {
         private TestItem _item;
-        private TestModelState _state;
+        private TestState _state;
         private string _newName;
 
-        public AddItemCommand(TestModelState state, string newName)
+        public AddItemCommand(TestState state, string newName)
         {
             _state = state;
             _newName = newName;
@@ -89,7 +64,7 @@ namespace test.app.business.actionhistory.command
             var given = new CommandHistory();
             given.MaxHistoryEntryCount = 100;
 
-            var givenState = new TestModelState();
+            var givenState = new TestState();
             var givenNewItemName = "Abc1";
             // When
             given.InvokeAndPush(new AddItemCommand(givenState, givenNewItemName));
@@ -118,7 +93,7 @@ namespace test.app.business.actionhistory.command
             var given = new CommandHistory();
             given.MaxHistoryEntryCount = 100;
 
-            var givenState = new TestModelState();
+            var givenState = new TestState();
             var givenNewItemName1 = "Abc1";
             var givenNewItemName2 = "Def2";
             // When
@@ -147,7 +122,7 @@ namespace test.app.business.actionhistory.command
             var given = new CommandHistory();
             given.MaxHistoryEntryCount = 100;
 
-            var givenState = new TestModelState();
+            var givenState = new TestState();
             var givenNewItemName1 = "Abc1";
             var givenNewItemName2 = "Def2";
             // When
@@ -190,10 +165,10 @@ namespace test.app.business.actionhistory.command
             var given = new CommandHistory();
             given.MaxHistoryEntryCount = 100;
 
-            var givenState = new TestModelState();
+            var givenState = new TestState();
             var givenName = "Abc1";
             // When
-            given.InvokeAndPush(new ReversibleCommand<TestModelState>(givenState, 
+            given.InvokeAndPush(new ReversibleCommand<TestState>(givenState, 
                 (state, workingData) => {
                     if (workingData.ContainsKey("item"))
                     {

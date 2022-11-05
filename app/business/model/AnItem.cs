@@ -1,11 +1,12 @@
-﻿using System;
+﻿using app.business.util;
+using System;
 
 namespace app.business.model
 {
     /// <summary>
     /// This is a representative example of a business model object. Feel free to delete or rename it at will. 
     /// </summary>
-    public class AnItem
+    public class AnItem : ITypedCloneable<AnItem>
     {
         public Guid Id { get; private set; }
         public string Name { get; private set; }
@@ -20,6 +21,11 @@ namespace app.business.model
         {
             Id = id;
             Name = name;
+        }
+
+        public AnItem Clone()
+        {
+            return new AnItem(Id, Name);
         }
     }
 }
