@@ -48,12 +48,9 @@ namespace app.business.util
                 if (value < _capacity && Count > 0)
                 {
                     // Discard old entries, as necessary. 
-                    int numberToDiscard = _capacity - value;
+                    int numberToDiscard = Math.Min(_capacity - value, Count);
                     for (int i = 0; i < numberToDiscard; i++)
                     {
-                        if (Count == 0)
-                            break;
-
                         _items.RemoveAt(0);
                     }
                 }
