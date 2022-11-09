@@ -13,7 +13,7 @@ An opinionated quick-start template for Godot projects using C# and aiming not t
 * The 'Roboto' Google font. All credit goes to their respective owners. Its license is contained in the font's directory. 
 
 ## Prerequisites
-While this project is designed to include all the necessary parts for a running start, it cannot provide _all_ the pieces. 
+While this project is designed to include most of the necessary parts for a running start, it cannot provide _all_ the pieces. 
 
 1. Make sure to have read and understood the official Godot tutorial: https://docs.godotengine.org/en/stable/tutorials/scripting/c_sharp/c_sharp_basics.html
 2. This project requires the .NET Framework v4.7.2 to **run**. 
