@@ -352,7 +352,6 @@ MigrationBackup/
 # Godot
 .import/
 .import
-.mono/
 
 # Visual Studio Code
 .vscode/
